@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Will You Be My Valentine? 💕</title>
+    <!-- EmailJS for email notifications -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 50%, #ffb3c6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 20px;
+            animation: float 15s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(1.5em, 5vw, 3em);
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Teddy Bear */
+        .teddy-bear {
+            width: min(300px, 80vw);
+            height: min(350px, 90vw);
+            margin: 0 auto 20px;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        .teddy-bear.sad {
+            animation: none;
+            transform: translateY(10px);
+        }
+
+        .teddy-bear.sadder {
+            animation: none;
+            transform: translateY(20px);
+        }
+
+        .teddy-bear.happy {
+            animation: bounce 1s infinite, spin 0.5s ease-out;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .bear-head {
+            width: min(200px, 60vw);
+            height: min(180px, 54vw);
+            background: #8B4513;
+            border-radius: 50% 50% 45% 45%;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .teddy-bear.sad .bear-head {
+            transform: rotate(-5deg);
+        }
+
+        .teddy-bear.sadder .bear-head {
+            transform: rotate(-10deg);
+        }
+
+        .bear-ear {
+            width: min(60px, 18vw);
+            height: min(60px, 18vw);
+            background: #8B4513;
+            border-radius: 50%;
+            position: absolute;
+            top: -20px;
+            box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .teddy-bear.sad .bear-ear {
+            transform: translateY(5px);
+        }
+
+        .teddy-bear.sadder .bear-ear {
+            transform: translateY(10px) rotate(-10deg);
+        }
+
+        .bear-ear.left {
+            left: 20px;
+        }
+
+        .bear-ear.right {
+            right: 20px;
+        }
+
+        .bear-ear-inner {
+            width: 35px;
+            height: 35px;
+            background: #D2691E;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bear-eye {
+            width: min(25px, 7.5vw);
+            height: min(25px, 7.5vw);
+            background: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 50px;
+            animation: blink 3s infinite;
+        }
+
+        @keyframes blink {
+            0%, 90%, 100% {
+                height: 25px;
+            }
+            95% {
+                height: 2px;
+            }
+        }
+
+        .bear-eye.left {
+            left: min(55px, 16.5vw);
+        }
+
+        .bear-eye.right {
+            right: min(55px, 16.5vw);
+        }
+
+        .bear-nose {
+            width: min(30px, 9vw);
+            height: min(25px, 7.5vw);
+            background: black;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .bear-mouth {
+            width: min(40px, 12vw);
+            height: min(20px, 6vw);
+            border: 3px solid black;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            position: absolute;
+            top: 105px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.5s ease;
+        }
+
+        .teddy-bear.sad .bear-mouth {
+            border-radius: 50% 50% 0 0;
+            border-bottom: none;
+            border-top: 3px solid black;
+            top: 110px;
+        }
+
+        .teddy-bear.sadder .bear-mouth {
+            border-radius: 50% 50% 0 0;
+            border-bottom: none;
+            border-top: 3px solid black;
+            top: 115px;
+            width: min(50px, 15vw);
+        }
+
+        /* Tears */
+        .bear-tear {
+            width: 8px;
+            height: 15px;
+            background: #87CEEB;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .bear-tear.left {
+            left: min(65px, 19.5vw);
+            top: min(70px, 21vw);
+        }
+
+        .bear-tear.right {
+            right: min(65px, 19.5vw);
+            top: min(70px, 21vw);
+        }
+
+        .teddy-bear.sad .bear-tear {
+            opacity: 0.7;
+            animation: tearDrop 2s infinite;
+        }
+
+        .teddy-bear.sadder .bear-tear {
+            opacity: 1;
+            animation: tearDrop 1.5s infinite;
+        }
+
+        @keyframes tearDrop {
+            0% { transform: translateY(0); opacity: 0.7; }
+            50% { transform: translateY(10px); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        .bear-body {
+            width: min(180px, 54vw);
+            height: min(150px, 45vw);
+            background: #8B4513;
+            border-radius: 50%;
+            margin: -20px auto 0;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .bear-belly {
+            width: min(120px, 36vw);
+            height: min(100px, 30vw);
+            background: #D2691E;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bear-arm {
+            width: min(50px, 15vw);
+            height: min(100px, 30vw);
+            background: #8B4513;
+            border-radius: 25px;
+            position: absolute;
+            top: 20px;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-20deg);
+            }
+            75% {
+                transform: rotate(20deg);
+            }
+        }
+
+        .bear-arm.left {
+            left: -30px;
+            transform-origin: top center;
+        }
+
+        .bear-arm.right {
+            right: -30px;
+            transform-origin: top center;
+        }
+
+        .bear-leg {
+            width: min(60px, 18vw);
+            height: min(80px, 24vw);
+            background: #8B4513;
+            border-radius: 30px;
+            position: absolute;
+            bottom: -40px;
+        }
+
+        .bear-leg.left {
+            left: 30px;
+        }
+
+        .bear-leg.right {
+            right: 30px;
+        }
+
+        .message {
+            background: white;
+            padding: clamp(15px, 4vw, 30px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+            max-width: 90%;
+            width: 100%;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message p {
+            font-size: clamp(1em, 3vw, 1.5em);
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: clamp(12px, 3vw, 15px) clamp(30px, 8vw, 40px);
+            font-size: clamp(1em, 3vw, 1.3em);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            min-width: 120px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(255, 107, 157, 0.8);
+            }
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff8fab, #ffb3c6);
+        }
+
+        .btn-no {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-no:hover {
+            background: #d0d0d0;
+            transform: scale(1.05);
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b9d;
+            animation: confetti-fall 3s infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .celebration-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(1.5em, 6vw, 4em);
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            animation: zoom 1s ease-out;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            pointer-events: auto;
+        }
+
+        .celebration-message .open-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: clamp(1em, 2.5vw, 1.2em);
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .celebration-message .open-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff8fab, #ffb3c6);
+        }
+
+        @keyframes zoom {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .no-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            animation: shake 0.5s;
+        }
+
+        .no-message.active {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+            25% { transform: translate(-50%, -50%) translateX(-10px); }
+            75% { transform: translate(-50%, -50%) translateX(10px); }
+        }
+
+        /* Envelope Styles */
+        .envelope-container {
+            position: relative;
+            width: min(400px, 90vw);
+            height: min(300px, 67.5vw);
+            margin: 20px auto;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-body {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            border-radius: 0 0 10px 10px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .envelope-flap {
+            width: 0;
+            height: 0;
+            border-left: min(200px, 45vw) solid transparent;
+            border-right: min(200px, 45vw) solid transparent;
+            border-top: min(150px, 33.75vw) solid #ff8fab;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top center;
+            transition: transform 0.8s ease-in-out;
+            z-index: 2;
+        }
+
+        .envelope-flap.open {
+            transform: rotateX(180deg);
+        }
+
+        .envelope-seal {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(80px, 20vw);
+            height: min(80px, 20vw);
+            background: #ffb3c6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: min(40px, 10vw);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+        }
+
+        .envelope-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.8s ease-in-out 0.3s;
+            pointer-events: none;
+        }
+
+        .envelope-content.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .envelope-prompt {
+            text-align: center;
+            color: white;
+            font-size: clamp(1em, 3vw, 1.5em);
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .hidden-content {
+            display: none;
+        }
+
+        .hidden-content.show {
+            display: block;
+        }
+
+        .no-btn-running {
+            position: fixed;
+            transition: opacity 0.3s ease !important;
+            pointer-events: none;
+        }
+
+        .no-btn-disappearing {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .no-btn-orbiting {
+            position: absolute;
+        }
+
+        /* Photo and love message section */
+        .photo-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .photo-message.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: zoom 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .photo-content img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            animation: slamIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slamIn {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            70% {
+                transform: scale(0.9) rotate(-5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .photo-content .love-text {
+            font-size: clamp(1em, 2.5vw, 1.3em);
+            color: #333;
+            line-height: 1.8;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ffb3c6;
+        }
+
+        .photo-content .close-btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            font-size: clamp(0.9em, 2vw, 1em);
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .photo-content .close-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #ff8fab, #ffb3c6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div id="hearts"></div>
+
+    <div class="container">
+        <h1 id="mainTitle" style="display: none;">💕 Will You Be My Valentine? 💕</h1>
+        
+        <!-- Envelope -->
+        <div class="envelope-container" id="envelopeContainer">
+            <div class="envelope" onclick="openEnvelope()">
+                <div class="envelope-flap" id="envelopeFlap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-seal">💌</div>
+                </div>
+            </div>
+            <div class="envelope-prompt" id="envelopePrompt">Click to open the envelope! 💕</div>
+        </div>
+
+        <!-- Hidden content that appears after envelope opens -->
+        <div class="hidden-content" id="hiddenContent">
+            <h1>💕 Will You Be My Valentine? 💕</h1>
+            
+            <div class="teddy-bear">
+                <div class="bear-head">
+                    <div class="bear-ear left">
+                        <div class="bear-ear-inner"></div>
+                    </div>
+                    <div class="bear-ear right">
+                        <div class="bear-ear-inner"></div>
+                    </div>
+                    <div class="bear-eye left"></div>
+                    <div class="bear-eye right"></div>
+                    <div class="bear-nose"></div>
+                    <div class="bear-mouth"></div>
+                    <div class="bear-tear left"></div>
+                    <div class="bear-tear right"></div>
+                </div>
+                <div class="bear-body">
+                    <div class="bear-belly"></div>
+                    <div class="bear-arm left"></div>
+                    <div class="bear-arm right"></div>
+                </div>
+                <div class="bear-leg left"></div>
+                <div class="bear-leg right"></div>
+            </div>
+
+            <div class="message">
+                <p>💖 My Beautiful Ashira,</p>
+                <p>This teddy bear has a special message for you...</p>
+                <p>Would you make me the happiest person and be my Valentine? 💕</p>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="handleYes()">Yes! 💕</button>
+                <button class="btn btn-no" onclick="handleNo(event)" id="noBtn">Maybe Later</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration overlay -->
+    <div class="celebration" id="celebration">
+        <div class="celebration-message">
+            <div style="font-size: 0.8em; line-height: 1.6;">
+                🎉 YAY! I'm So Happy! 🎉<br>
+                💕 Happy Valentine's Day! 💕<br><br>
+                Thank you for being my Valentine! 💖
+            </div>
+            <button class="open-btn" onclick="openPhotoMessage()">Open 💌</button>
+        </div>
+    </div>
+
+    <!-- Photo and Love Message -->
+    <div class="photo-message" id="photoMessage">
+        <div class="photo-content">
+            <img src="https://picsum.photos/500/400?random=1" alt="Glen & Ashira" id="couplePhoto" onerror="this.src='https://via.placeholder.com/500x400/ff6b9d/ffffff?text=Glen+%26+Ashira';">
+            <div class="love-text">
+                <p>
+                    My Beautiful Ashira, I can't even begin to express how incredibly happy I am that you said yes to being my Valentine! 
+                    You are the most amazing person I've ever met, and every single day with you feels like a dream come true. 
+                    Your smile lights up my world, your laugh is my favorite sound, and your love fills my heart with 
+                    so much joy that I can't help but smile every time I think of you. You make me the happiest person 
+                    in the world, and I'm so grateful to have you in my life. Thank you for being my Valentine, my love, my everything. 💖
+                </p>
+                <p style="margin-top: 15px; font-size: 1.1em; font-weight: bold; color: #ff6b9d;">
+                    Forever yours, Glen 💕
+                </p>
+            </div>
+            <button class="close-btn" onclick="closePhotoMessage()">Close</button>
+        </div>
+    </div>
+
+    <!-- No message -->
+    <div class="no-message" id="noMessage">
+        <p style="font-size: 1.5em; color: #ff6b9d;">The teddy bear is sad... 😢<br>But I'll keep trying! 💪</p>
+        <button class="btn btn-yes" onclick="closeNoMessage()" style="margin-top: 20px;">Try Again</button>
+    </div>
+
+    <script>
+        /*
+         * ============================================
+         * EMAIL NOTIFICATION SETUP INSTRUCTIONS
+         * ============================================
+         * 
+         * To receive email notifications when she clicks "Yes":
+         * 
+         * OPTION 1: EmailJS (Recommended - Free)
+         * 1. Go to https://www.emailjs.com/ and create a free account
+         * 2. Create an Email Service (Gmail, Outlook, etc.)
+         * 3. Create an Email Template with these variables:
+         *    - {{to_email}}
+         *    - {{to_name}}
+         *    - {{message}}
+         *    - {{subject}}
+         * 4. Get your Service ID, Template ID, and Public Key
+         * 5. Replace the values below in the sendEmailNotification function:
+         *    - YOUR_SERVICE_ID
+         *    - YOUR_TEMPLATE_ID
+         *    - YOUR_PUBLIC_KEY
+         * 
+         * OPTION 2: Hosting & Sharing
+         * To share this with her, you need to host it online:
+         * 
+         * Free hosting options:
+         * - GitHub Pages: Upload to GitHub and enable Pages
+         * - Netlify: Drag and drop the HTML file
+         * - Vercel: Upload the file
+         * - Google Drive: Share as a link (limited)
+         * 
+         * Once hosted, share the URL with her!
+         * 
+         * ============================================
+         */
+        
+        let envelopeOpened = false;
+        let noClickCount = 0;
+        let bearElement = null;
+        let orbitInterval = null;
+        let bearContainer = null;
+
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const hearts = ['💕', '💖', '💗', '💓', '💝', '❤️', '💞'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Open envelope
+        function openEnvelope() {
+            if (envelopeOpened) return;
+            envelopeOpened = true;
+            
+            const envelopeFlap = document.getElementById('envelopeFlap');
+            const envelopeContainer = document.getElementById('envelopeContainer');
+            const envelopePrompt = document.getElementById('envelopePrompt');
+            const hiddenContent = document.getElementById('hiddenContent');
+            
+            // Open the flap
+            envelopeFlap.classList.add('open');
+            
+            // Hide envelope and prompt after animation
+            setTimeout(() => {
+                envelopeContainer.style.display = 'none';
+                hiddenContent.classList.add('show');
+                bearElement = document.querySelector('.teddy-bear');
+                bearContainer = document.querySelector('.teddy-bear').parentElement;
+            }, 800);
+        }
+
+        // Send email notification
+        function sendEmailNotification() {
+            try {
+                // ============================================
+                // CONFIGURE EMAILJS HERE:
+                // Replace these values with your EmailJS credentials
+                // Get them from https://www.emailjs.com/
+                // ============================================
+                const serviceID = 'service_3ejh0br';        // Your EmailJS Service ID
+                const templateID = 'template_26vwc1s';      // Your EmailJS Template ID  
+                const publicKey = '-AKcpeI6j_yUZ5IUN';        // Your EmailJS Public Key
+                // ============================================
+                
+                // Check if EmailJS is configured
+                if (serviceID === 'YOUR_SERVICE_ID' || templateID === 'YOUR_TEMPLATE_ID' || publicKey === 'YOUR_PUBLIC_KEY') {
+                    console.log('EmailJS not configured yet. Please set up your credentials.');
+                    console.log('Instructions are in the comments at the top of the script.');
+                    // Still log the event for debugging
+                    console.log('🎉 Event: Ashira said YES at ' + new Date().toLocaleString());
+                    return;
+                }
+                
+                // Initialize and send email
+                if (typeof emailjs !== 'undefined') {
+                    emailjs.init(publicKey);
+                    
+                    emailjs.send(serviceID, templateID, {
+                        to_email: 'christopherahh6@gmail.com',
+                        to_name: 'Glen',
+                        message: 'Ashira said YES to being your Valentine! 💕\n\nTime: ' + new Date().toLocaleString(),
+                        subject: '🎉 She Said YES! 🎉'
+                    }).then(function(response) {
+                        console.log('✅ Email notification sent successfully!', response.status, response.text);
+                    }, function(error) {
+                        console.log('❌ Email failed to send:', error);
+                        // Log event anyway
+                        console.log('🎉 Event logged: Ashira said YES at ' + new Date().toLocaleString());
+                    });
+                } else {
+                    console.log('EmailJS library not loaded. Check your internet connection.');
+                    console.log('🎉 Event logged: Ashira said YES at ' + new Date().toLocaleString());
+                }
+            } catch (error) {
+                console.log('Email notification error:', error);
+                // Always log the event
+                console.log('🎉 Event logged: Ashira said YES at ' + new Date().toLocaleString());
+            }
+        }
+
+        // Handle Yes button
+        function handleYes() {
+            // Send email notification
+            sendEmailNotification();
+            
+            // Stop orbit animation if running
+            if (orbitInterval) {
+                clearInterval(orbitInterval);
+                orbitInterval = null;
+            }
+            
+            // Remove mousemove listener
+            document.removeEventListener('mousemove', moveNoButtonAwayFromCursor);
+            
+            // Make bear happy
+            if (bearElement) {
+                bearElement.classList.remove('sad', 'sadder');
+                bearElement.classList.add('happy');
+            }
+            
+            // Reset no button
+            const noBtn = document.getElementById('noBtn');
+            noBtn.classList.remove('no-btn-orbiting');
+            noBtn.style.position = '';
+            noBtn.style.left = '';
+            noBtn.style.top = '';
+            noBtn.style.transform = '';
+            noBtn.style.transition = '';
+            
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('active');
+            
+            // Create confetti
+            createConfetti();
+            
+            // Play celebration animation
+            setTimeout(() => {
+                const message = document.querySelector('.celebration-message');
+                message.style.animation = 'zoom 1s ease-out';
+            }, 100);
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const celebration = document.getElementById('celebration');
+            const colors = ['#ff6b9d', '#ff8fab', '#ffb3c6', '#ffd6e8', '#ffebf3'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                celebration.appendChild(confetti);
+            }
+        }
+
+        // Handle No button (with some fun interaction)
+        function handleNo(event) {
+            noClickCount++;
+            const noBtn = document.getElementById('noBtn');
+            const noMessage = document.getElementById('noMessage');
+            
+            // Make bear sadder with each click
+            if (bearElement) {
+                bearElement.classList.remove('happy');
+                if (noClickCount === 1) {
+                    bearElement.classList.add('sad');
+                } else if (noClickCount >= 2) {
+                    bearElement.classList.remove('sad');
+                    bearElement.classList.add('sadder');
+                }
+            }
+            
+            if (noClickCount < 3) {
+                // Move the button randomly
+                const randomX = (Math.random() - 0.5) * 200;
+                const randomY = (Math.random() - 0.5) * 200;
+                noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+                if (noClickCount === 1) {
+                    noBtn.textContent = 'Are you sure? 😢';
+                } else {
+                    noBtn.textContent = 'Please think again! 💕';
+                }
+            } else if (noClickCount >= 3) {
+                // On the 3rd click and beyond, make the button move when cursor gets close
+                noBtn.textContent = 'No! 😢';
+                noBtn.classList.add('no-btn-orbiting');
+                
+                // Set initial position near bear
+                if (bearElement) {
+                    const bearRect = bearElement.getBoundingClientRect();
+                    const bearCenterX = bearRect.left + bearRect.width / 2;
+                    const bearCenterY = bearRect.top + bearRect.height / 2;
+                    
+                    // Position button to the right of bear initially
+                    noBtn.style.position = 'fixed';
+                    noBtn.style.left = (bearCenterX + 200) + 'px';
+                    noBtn.style.top = bearCenterY + 'px';
+                    noBtn.style.transform = 'translate(-50%, -50%)';
+                    noBtn.style.transition = 'all 0.3s ease-out';
+                    noBtn.style.pointerEvents = 'auto';
+                }
+                
+                // Add mousemove listener to move button when cursor approaches
+                document.addEventListener('mousemove', moveNoButtonAwayFromCursor);
+            }
+        }
+
+        // Move no button away when cursor gets close (around bear area)
+        function moveNoButtonAwayFromCursor(event) {
+            const noBtn = document.getElementById('noBtn');
+            if (!noBtn.classList.contains('no-btn-orbiting')) return;
+            
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+            const btnRect = noBtn.getBoundingClientRect();
+            const btnX = btnRect.left + btnRect.width / 2;
+            const btnY = btnRect.top + btnRect.height / 2;
+            
+            const distance = Math.sqrt(Math.pow(btnX - mouseX, 2) + Math.pow(btnY - mouseY, 2));
+            
+            // If cursor is close (within 150px), move button away but keep it around bear/message area
+            if (distance < 150 && bearElement) {
+                const bearRect = bearElement.getBoundingClientRect();
+                const messageRect = document.querySelector('.message')?.getBoundingClientRect();
+                
+                // Calculate center of bear and message area
+                let centerX, centerY;
+                if (messageRect) {
+                    centerX = (bearRect.left + bearRect.width / 2 + messageRect.left + messageRect.width / 2) / 2;
+                    centerY = (bearRect.top + bearRect.height / 2 + messageRect.top + messageRect.height / 2) / 2;
+                } else {
+                    centerX = bearRect.left + bearRect.width / 2;
+                    centerY = bearRect.top + bearRect.height / 2;
+                }
+                
+                // Calculate direction away from cursor
+                const deltaX = btnX - mouseX;
+                const deltaY = btnY - mouseY;
+                const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                // Move button away from cursor but keep it in orbit around center
+                const moveDistance = 180; // Radius around bear/message
+                const angle = Math.atan2(deltaY, deltaX);
+                
+                // Calculate new position on circle around center
+                const newAngle = angle + Math.PI / 4; // Offset angle
+                const newX = centerX + Math.cos(newAngle) * moveDistance;
+                const newY = centerY + Math.sin(newAngle) * moveDistance;
+                
+                // Make sure it stays within viewport bounds
+                const padding = 50;
+                const finalX = Math.max(padding, Math.min(window.innerWidth - padding, newX));
+                const finalY = Math.max(padding, Math.min(window.innerHeight - padding, newY));
+                
+                noBtn.style.left = finalX + 'px';
+                noBtn.style.top = finalY + 'px';
+            }
+        }
+
+        // Open photo message
+        function openPhotoMessage() {
+            const photoMessage = document.getElementById('photoMessage');
+            photoMessage.classList.add('active');
+            
+            // Reset image animation
+            const img = document.getElementById('couplePhoto');
+            if (img) {
+                img.style.animation = 'none';
+                setTimeout(() => {
+                    img.style.animation = 'slamIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                }, 10);
+            }
+        }
+
+        // Close photo message
+        function closePhotoMessage() {
+            const photoMessage = document.getElementById('photoMessage');
+            photoMessage.classList.remove('active');
+        }
+
+        // Close no message
+        function closeNoMessage() {
+            const noMessage = document.getElementById('noMessage');
+            noMessage.classList.remove('active');
+            noClickCount = 0;
+            const noBtn = document.getElementById('noBtn');
+            noBtn.classList.remove('no-btn-running', 'no-btn-disappearing', 'no-btn-orbiting');
+            noBtn.style.transform = '';
+            noBtn.style.position = '';
+            noBtn.style.left = '';
+            noBtn.style.top = '';
+            noBtn.style.transition = '';
+            noBtn.style.opacity = '';
+            noBtn.textContent = 'Maybe Later';
+            
+            // Remove mousemove listener
+            document.removeEventListener('mousemove', moveNoButtonAwayFromCursor);
+            
+            // Stop orbit animation
+            if (orbitInterval) {
+                clearInterval(orbitInterval);
+                orbitInterval = null;
+            }
+            
+            // Reset bear to normal
+            if (bearElement) {
+                bearElement.classList.remove('sad', 'sadder', 'happy');
+            }
+        }
+
+        // Initialize hearts on load
+        window.addEventListener('load', createHearts);
+    </script>
+</body>
+</html>
